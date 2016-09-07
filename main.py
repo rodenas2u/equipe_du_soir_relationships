@@ -2,7 +2,7 @@ import networkx as nx
 import matplotlib.pyplot as plt
 
 G=nx.Graph()
-nodes = ["Micoud","Moatti","Roche","Séverac","Rouet","Le Guen","Pauwels","Appadoo","Favard","Schneider","Bianchi","Bretagne","Schneider","Riou","Libbra","Roustan","Tarrago","Blanc","Penot","Gazan","Duluc","Lions","Le Roy","Lemoine","Degorre","Marchand","Anigo","Billong","Guirou","Djellit","Bielderman","Sebaoun"]
+nodes = ["Galli","Melissande","Micoud","Moatti","Roche","Séverac","Rouet","Le Guen","Pauwels","Appadoo","Favard","Schneider","Bianchi","Bretagne","Schneider","Riou","Libbra","Roustan","Tarrago","Blanc","Penot","Gazan","Duluc","Lions","Le Roy","Lemoine","Degorre","Marchand","Anigo","Billong","Guirou","Djellit","Bielderman","Dufy"]
 
 
 def addAllNodes(nodes):
@@ -66,8 +66,10 @@ groups = [
 	["Le Guen","Rouyer","Degorre","Penot","Séverac"],
 	["Micoud","Pauwels","Duluc","Rouet","Schneider"],
 	["Roustan","Le Guen","Tarrago","Micoud","Appadoo"],
-	["Duluc","Sebaoun","Roche","Cozette","Rioud"]
-
+	["Melissande","Billong","Riou","Cozette","Appadoo","Degorre"],
+	["Séverac","Schneider","Roustan","Moatti","Galli"],
+	["Séverac","Micoud","Moatti","Appadoo","Blanc"],
+	["Micoud","Roustan","Galli","Royer","Dufy"]
 ]
 
 buildAllGroupLink(groups)
@@ -96,7 +98,7 @@ pos = nx.spring_layout(G,k=1,iterations=100)
 #pos = nx.spring_layout(G)
 
 #nx.draw_networkx_edge_labels(G,pos,edge_labels=labels)
-nx.draw_networkx_nodes(G,pos,nodelist=labels,node_color='red',node_size=2000,)
+nx.draw_networkx_nodes(G,pos,nodelist=labels,node_color='red',node_size=2000)
 #nx.draw_networkx_edges(G,pos,edgelist=weak_edges,alpha=0.5,edge_color=weights, width=5.0, edge_cmap=plt.cm.Blues)
 edges = nx.draw_networkx_edges(G,pos,edgelist=strong_edges,alpha=1,edge_color=strong_weights, width=5.0, edge_cmap=plt.cm.Blues)
 nx.draw_networkx_labels(G,pos,labels,font_size=16)
