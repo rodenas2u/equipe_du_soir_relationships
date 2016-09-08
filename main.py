@@ -2,7 +2,7 @@ import networkx as nx
 import matplotlib.pyplot as plt
 
 G=nx.Graph()
-nodes = ["Galli","Melissande","Micoud","Moatti","Roche","Séverac","Rouet","Le Guen","Pauwels","Appadoo","Favard","Schneider","Bianchi","Bretagne","Schneider","Riou","Libbra","Roustan","Tarrago","Blanc","Penot","Gazan","Duluc","Lions","Le Roy","Lemoine","Degorre","Marchand","Anigo","Billong","Guirou","Djellit","Bielderman","Dufy"]
+nodes = ["Latour","Galli","Melissande","Micoud","Moatti","Roche","Séverac","Rouet","Le Guen","Pauwels","Appadoo","Favard","Schneider","Bianchi","Bretagne","Schneider","Riou","Libbra","Roustan","Tarrago","Blanc","Penot","Gazan","Duluc","Lions","Le Roy","Lemoine","Degorre","Marchand","Anigo","Billong","Guirou","Djellit","Bielderman","Dufy"]
 
 
 def addAllNodes(nodes):
@@ -69,7 +69,9 @@ groups = [
 	["Melissande","Billong","Riou","Cozette","Appadoo","Degorre"],
 	["Séverac","Schneider","Roustan","Moatti","Galli"],
 	["Séverac","Micoud","Moatti","Appadoo","Blanc"],
-	["Micoud","Roustan","Galli","Royer","Dufy"]
+	["Micoud","Roustan","Galli","Royer","Dufy"],
+	["Latour","Duluc","Blanc","Galli","Schneider"],
+	["Degorre","Lions","Penot","Roustan","Pauwels"]
 ]
 
 buildAllGroupLink(groups)
