@@ -3,8 +3,10 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import numpy as np
 from matplotlib.widgets import Slider, Button, RadioButtons
+import operator
+from collections import OrderedDict
 
-G=nx.Graph()
+G=nx.Graph().to_undirected()
 nodes = ["Roux","Cozette","Rouyer","Prugneau","Latour","Galli","Melissande","Micoud","Moatti","Roche","Séverac","Rouet","Le Guen","Pauwels","Appadoo","Favard","Schneider","Bianchi","Bretagne","Riou","Libbra","Roustan","Tarrago","Blanc","Penot","Gazan","Duluc","Lions","Le Roy","Lemoine","Degorre","Marchand","Anigo","Billong","Guirou","Djellit","Bielderman","Dufy"]
 labels = {}
 weak_edges = []
@@ -41,7 +43,7 @@ groups = [
 	["Galli","Moatti","Roux","Roustan","Duluc"],
 	["Rouyer","Bielderman","Penot","Dufy","Appadoo"],
 	["Micoud","Penot","Degorre","Marchand","Blanc"],
-	["Séverac","Melissande","Moatti","Blanc","Latour"]
+	["Séverac","Melissande","Moatti","Blanc","Latour"],
 ]
 
 def addAllNodes(nodes):
@@ -149,12 +151,52 @@ def getBubbleChart(d):
 	
 	plt.show()
 
+def barChartFromDict(dictionnary, with_mean=False, with_median=False, title=None):
+	X = np.arange(0,len(dictionnary),1)
+	plt.bar(X, dictionnary.values(), align='center', width=0.5)
+	plt.xticks(X , dictionnary.keys(),ha='right', rotation=45)
+	if title:
+		plt.title(title)
+	for i,k in enumerate(dictionnary):
+		plt.text(int(i) - 0.5, int(dictionnary[k]) + 1,  str(dictionnary[k]), color='red', fontweight='bold')
+	if with_mean:
+		plt.axhline(sum(dictionnary.values()) / len(dictionnary), color='black', linestyle='dashed', linewidth=2)
+	if with_median:
+		plt.axvline(int(getMedian(dictionnary))-0.5, color='black', linestyle='dashed', linewidth=2)
+	plt.show()
+
+def getMedian(dictionnary):
+	count = 0
+	index = 0
+	edge = sum(dictionnary.values())/2
+	for keys,values in dictionnary.items():
+		count += values
+		index += 1
+		if count > edge:
+			return index
+
+def displayDegrees():
+	degrees = nx.degree(G)
+	sdegrees = sorted(list(degrees.items()),key=operator.itemgetter(1),reverse=True)
+	barChartFromDict(OrderedDict(sdegrees))
+
+def clustering():
+	clust_coefficients = nx.clustering(G)
+	print(clust_coefficients)
+	graphs = list(nx.connected_component_subgraphs(G))
+	main_node = graphs[0]
+	bet_cen = nx.betweenness_centrality(main_node)
+	eig_cen = nx.eigenvector_centrality(main_node)
+	print(main_node)
 
 addAllNodes(nodes)
 buildAllGroupLink(groups)
 labelizeEdge()
 #drawNetwork()
-buildMatrix()
+#buildMatrix()
+#displayDegrees()
+
+clustering()
 
 
-
+#http://www.cl.cam.ac.uk/~cm542/teaching/2011/stna-pdfs/stna-lecture11.pdf
