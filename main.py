@@ -44,6 +44,10 @@ groups = [
 	["Rouyer","Bielderman","Penot","Dufy","Appadoo"],
 	["Micoud","Penot","Degorre","Marchand","Blanc"],
 	["Séverac","Melissande","Moatti","Blanc","Latour"],
+	["Galli","Roux","Roustan","Nigay","Séverac"],
+	["Galli","Micoud","Blanc","Schneider","Latour"],
+	["Micoud","Appadoo","Dufy","Latour","Blanc"],
+	["Roustan","Roux","Moatti","Galli","Séverac"]
 ]
 
 def addAllNodes(nodes):
@@ -195,8 +199,10 @@ labelizeEdge()
 #drawNetwork()
 #buildMatrix()
 #displayDegrees()
-
 clustering()
 
+print(nx.degree_centrality(G))
+print(nx.betweenness_centrality(G))
+print(nx.eigenvector_centrality(G))
 
 #http://www.cl.cam.ac.uk/~cm542/teaching/2011/stna-pdfs/stna-lecture11.pdf
