@@ -47,7 +47,9 @@ groups = [
 	["Galli","Roux","Roustan","Nigay","Séverac"],
 	["Galli","Micoud","Blanc","Schneider","Latour"],
 	["Micoud","Appadoo","Dufy","Latour","Blanc"],
-	["Roustan","Roux","Moatti","Galli","Séverac"]
+	["Roustan","Séverac","Galli","Melissande","Moatti"],
+	["Roustan","Roux","Moatti","Galli","Séverac"],
+	["Micoud","Rouyer","Marchand","Bielderman","Latour"]
 ]
 
 def addAllNodes(nodes):
@@ -199,10 +201,23 @@ labelizeEdge()
 #drawNetwork()
 #buildMatrix()
 #displayDegrees()
-clustering()
+#clustering()
+print("---------------------------")
+print("Degree centrality (the number of links incident upon a node) => LIKELIHOOD TO CATCH AN INFORMATION")
+print(sorted(list(nx.degree_centrality(G).items()),key=operator.itemgetter(1),reverse=True))
+print("---------------------------")
+print("---------------------------")
+print("Betweenness centrality (quantifies the number of times a node acts as a bridge along the shortest path between two other nodes) => CONTROL ON OTHERS")
+print(sorted(list(nx.betweenness_centrality(G).items()),key=operator.itemgetter(1),reverse=True))
+print("---------------------------")
+print("---------------------------")
+print("Eigenvector centrality (a measure of the influence of a node in a network)")
+print(sorted(list(nx.eigenvector_centrality(G).items()),key=operator.itemgetter(1),reverse=True))
+print("---------------------------")
+print("---------------------------")
+print("Katz centrality (relative influence of a node)")
+print(sorted(list(nx.katz_centrality_numpy(G).items()),key=operator.itemgetter(1),reverse=True))
+print("---------------------------")
 
-print(nx.degree_centrality(G))
-print(nx.betweenness_centrality(G))
-print(nx.eigenvector_centrality(G))
 
 #http://www.cl.cam.ac.uk/~cm542/teaching/2011/stna-pdfs/stna-lecture11.pdf
