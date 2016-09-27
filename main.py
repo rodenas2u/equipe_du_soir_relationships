@@ -5,6 +5,7 @@ import numpy as np
 from matplotlib.widgets import Slider, Button, RadioButtons
 import operator
 from collections import OrderedDict
+from pymining import itemmining
 
 G=nx.Graph().to_undirected()
 nodes = ["Roux","Cozette","Rouyer","Prugneau","Latour","Galli","Melissande","Micoud","Moatti","Roche","Séverac","Rouet","Le Guen","Pauwels","Appadoo","Favard","Schneider","Bianchi","Bretagne","Riou","Libbra","Roustan","Tarrago","Blanc","Penot","Gazan","Duluc","Lions","Le Roy","Lemoine","Degorre","Marchand","Anigo","Billong","Guirou","Djellit","Bielderman","Dufy"]
@@ -51,6 +52,8 @@ groups = [
 	["Roustan","Roux","Moatti","Galli","Séverac"],
 	["Micoud","Rouyer","Marchand","Bielderman","Latour"]
 ]
+
+groups_tuples = tuple(tuple(x) for x in groups)
 
 def addAllNodes(nodes):
 	for node in nodes:
@@ -195,6 +198,24 @@ def clustering():
 	eig_cen = nx.eigenvector_centrality(main_node)
 	print(main_node)
 
+def displayCentralities():
+	print("---------------------------")
+	print("Degree centrality (the number of links incident upon a node) => LIKELIHOOD TO CATCH AN INFORMATION")
+	print(sorted(list(nx.degree_centrality(G).items()),key=operator.itemgetter(1),reverse=True))
+	print("---------------------------")
+	print("---------------------------")
+	print("Betweenness centrality (quantifies the number of times a node acts as a bridge along the shortest path between two other nodes) => CONTROL ON OTHERS")
+	print(sorted(list(nx.betweenness_centrality(G).items()),key=operator.itemgetter(1),reverse=True))
+	print("---------------------------")
+	print("---------------------------")
+	print("Eigenvector centrality (a measure of the influence of a node in a network)")
+	print(sorted(list(nx.eigenvector_centrality(G).items()),key=operator.itemgetter(1),reverse=True))
+	print("---------------------------")
+	print("---------------------------")
+	print("Katz centrality (relative influence of a node)")
+	print(sorted(list(nx.katz_centrality_numpy(G).items()),key=operator.itemgetter(1),reverse=True))
+	print("---------------------------")
+
 addAllNodes(nodes)
 buildAllGroupLink(groups)
 labelizeEdge()
@@ -202,22 +223,11 @@ labelizeEdge()
 #buildMatrix()
 #displayDegrees()
 #clustering()
-print("---------------------------")
-print("Degree centrality (the number of links incident upon a node) => LIKELIHOOD TO CATCH AN INFORMATION")
-print(sorted(list(nx.degree_centrality(G).items()),key=operator.itemgetter(1),reverse=True))
-print("---------------------------")
-print("---------------------------")
-print("Betweenness centrality (quantifies the number of times a node acts as a bridge along the shortest path between two other nodes) => CONTROL ON OTHERS")
-print(sorted(list(nx.betweenness_centrality(G).items()),key=operator.itemgetter(1),reverse=True))
-print("---------------------------")
-print("---------------------------")
-print("Eigenvector centrality (a measure of the influence of a node in a network)")
-print(sorted(list(nx.eigenvector_centrality(G).items()),key=operator.itemgetter(1),reverse=True))
-print("---------------------------")
-print("---------------------------")
-print("Katz centrality (relative influence of a node)")
-print(sorted(list(nx.katz_centrality_numpy(G).items()),key=operator.itemgetter(1),reverse=True))
-print("---------------------------")
+
+
+
+relim_input = itemmining.get_relim_input(groups_tuples)
+report = itemmining.relim(relim_input, 2)
 
 
 #http://www.cl.cam.ac.uk/~cm542/teaching/2011/stna-pdfs/stna-lecture11.pdf
