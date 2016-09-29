@@ -8,7 +8,7 @@ from collections import OrderedDict
 from pymining import itemmining
 
 G=nx.Graph().to_undirected()
-nodes = ["Roux","Cozette","Rouyer","Prugneau","Latour","Galli","Melissande","Micoud","Moatti","Roche","Séverac","Rouet","Le Guen","Pauwels","Appadoo","Favard","Schneider","Bianchi","Bretagne","Riou","Libbra","Roustan","Tarrago","Blanc","Penot","Gazan","Duluc","Lions","Le Roy","Lemoine","Degorre","Marchand","Anigo","Billong","Guirou","Djellit","Bielderman","Dufy"]
+nodes = ["Nigay","Domenech","Roux","Cozette","Rouyer","Prugneau","Latour","Galli","Melissande","Micoud","Moatti","Roche","Séverac","Rouet","Le Guen","Pauwels","Appadoo","Favard","Schneider","Bianchi","Bretagne","Riou","Libbra","Roustan","Tarrago","Blanc","Penot","Gazan","Duluc","Lions","Le Roy","Lemoine","Degorre","Marchand","Anigo","Billong","Djellit","Bielderman","Dufy"]
 labels = {}
 weak_edges = []
 strong_edges = []
@@ -23,7 +23,7 @@ groups = [
 	["Le Roy","Lions","Bretagne","Bianchi","Duluc"],
 	["Appadoo","Degorre","Lemoine","Séverac","Riou"],
 	["Micoud","Anigo","Billong","Djellit","Pauwels"],
-	["Schneider","Micoud","Guirou","Favard","Marchand"],
+	["Schneider","Micoud","Roux","Favard","Marchand"],
 	["Le Guen","Bielderman","Libbra","Blanc","Rouet"],
 	["Le Guen","Micoud","Roustan","Tarrago","Moatti"],
 	["Roche","Séverac","Schneider","Favard","Bianchi"],
@@ -50,7 +50,9 @@ groups = [
 	["Micoud","Appadoo","Dufy","Latour","Blanc"],
 	["Roustan","Séverac","Galli","Melissande","Moatti"],
 	["Roustan","Roux","Moatti","Galli","Séverac"],
-	["Micoud","Rouyer","Marchand","Bielderman","Latour"]
+	["Micoud","Rouyer","Marchand","Bielderman","Latour"],
+	["Domenech","Micoud","Rouyer","Dufy","Penot"],
+	["Séverac","Tarrago","Degorre","Schneider","Blanc"]
 ]
 
 groups_tuples = tuple(tuple(x) for x in groups)
@@ -93,6 +95,7 @@ def labelizeEdge():
 		labels[node] = node
 
 def drawNetwork():
+	labelizeEdge()
 	edges,weights = zip(*nx.get_edge_attributes(G,'weight').items())
 	
 	edge_weight=dict([((u,v,),int(d['weight'])) for u,v,d in G.edges(data=True)])
@@ -101,21 +104,22 @@ def drawNetwork():
 			strong_edges.append(item[0])
 			strong_weights.append(item[1])
 
-	pos = nx.spring_layout(G,k=1,iterations=100)
+	pos = nx.spring_layout(G,k=.25)
 	#pos = nx.spring_layout(G)
 
 	#nx.draw_networkx_edge_labels(G,pos,edge_labels=labels)
-	nx.draw_networkx_nodes(G,pos,nodelist=labels,node_color='red',node_size=2000)
+	nx.draw_networkx_nodes(G,pos,nodelist=labels,node_color='red',node_size=1500)
 	#nx.draw_networkx_edges(G,pos,edgelist=weak_edges,alpha=0.5,edge_color=weights, width=5.0, edge_cmap=plt.cm.Blues)
-	edges = nx.draw_networkx_edges(G,pos,edgelist=strong_edges,alpha=1,edge_color=strong_weights, width=5.0, edge_cmap=plt.cm.Blues)
+	edges = nx.draw_networkx_edges(G,pos,edgelist=strong_edges,alpha=1,edge_color=strong_weights, width=3.0, edge_cmap=plt.cm.Blues)
 	nx.draw_networkx_labels(G,pos,labels,font_size=16)
 	plt.axis('off')
 	plt.colorbar(edges)
 	for non_edge in nx.non_edges(G):
 		print(non_edge)
+	plt.tight_layout()
 	plt.show()
 
-def buildMatrix(plot=True,half=True):
+def buildRelationshipMat(plot=True,half=True):
 	d = pd.DataFrame(0, index=nodes, columns=nodes)
 	for item in nx.get_edge_attributes(G,'weight').items():
 		assos = item[0]
@@ -216,11 +220,16 @@ def displayCentralities():
 	print(sorted(list(nx.katz_centrality_numpy(G).items()),key=operator.itemgetter(1),reverse=True))
 	print("---------------------------")
 
+def sumupRelationship(relationship_mat,subject):
+	relationship_mat.drop([subject],inplace=True).sort_values(inplace=True)
+	friends = []
+
+
 addAllNodes(nodes)
 buildAllGroupLink(groups)
-labelizeEdge()
 #drawNetwork()
-#buildMatrix()
+relations = buildRelationshipMat(plot=False,half=False)
+sumupRelationship(relations,"Micoud")
 #displayDegrees()
 #clustering()
 
